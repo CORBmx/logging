@@ -1,0 +1,17 @@
+{
+    "name": "corb/activity-logger",
+    "description": "Activity logger for your application",
+    "authors": [
+        {
+            "name": "Jesus Barrera",
+            "email": "jesus.barrera@corb.mx"
+        }
+    ],
+    "type": "library",
+    "keywords": ["activity", "logger", "logging", "logs", "actions"],
+    "autoload": {
+        "psr-4": {
+            "Corb\\ActivityLogger\\": "src/"
+        }
+    }
+}
