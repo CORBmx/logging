@@ -4,6 +4,7 @@ namespace Corb\Logging\Traits;
 
 use Corb\Logging\Models\LogContextUpdate;
 use Corb\Logging\Logger;
+use Corb\Logging\Actions;
 
 /**
  * This trait allows the model that uses it, to register new entries in the activity
@@ -11,24 +12,19 @@ use Corb\Logging\Logger;
  * actions are logged automatically.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
- * @since 0.1.0
- * @version 0.1.0
  */
 trait LoggeableTrait
 {
     /**
      * Registers listeners for the created, updating and deleted events.
-     *
+     * 
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
-     *
      * @return None
      */
     public static function bootLoggeableTrait()
     {
         static::created(function ($model) {
-            $model->createLog(Logger::CREATE);
+            $model->createLog(Actions::CREATE);
         });
 
         static::updating(function ($model) {
@@ -40,11 +36,11 @@ trait LoggeableTrait
             $context->after  = $after;
             $context->before = $before;
 
-            $log = $model->createLog(Logger::UPDATE, $context);
+            $log = $model->createLog(Actions::UPDATE, $context);
         });
 
         static::deleted(function ($model) {
-            $model->createLog(Logger::DELETE);
+            $model->createLog(Actions::DELETE);
         });
     }
 
@@ -52,14 +48,12 @@ trait LoggeableTrait
      * Creates a new log entry for this model.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
      *
      * @param  string $action           Indicates the action being logged
      * @param  object $context          Represents the contextual data of the log
      * @param  number $responsible_id   Id of the user responsible for the action
      *
-     * @return App\Models\ActivityLog   The created log
+     * @return Corb\Logging\Models\ActivityLog   The created log
      */
     public function createLog($action, $context = NULL, $responsible_id = NULL)
     {
@@ -70,8 +64,6 @@ trait LoggeableTrait
      * Returns the activity logs for this model.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
      *
      * @return MorphMany
      */

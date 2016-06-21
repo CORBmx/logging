@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
  * Model for the activity_logs table.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
- * @since 0.1.0
- * @version 0.1.0
  */
 class ActivityLog extends Model
 {
@@ -28,8 +26,8 @@ class ActivityLog extends Model
      * Get the loggeable model.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
+     *
+     * @return MorphTo
      */
     public function loggeable()
     {
@@ -40,8 +38,6 @@ class ActivityLog extends Model
      * Get the responsible user of this log.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
      *
      * @return BelongsTo
      */
@@ -51,16 +47,57 @@ class ActivityLog extends Model
     }
 
     /**
-     * Gets the update log context.
+     * Dinamically defines a relationship with a context model if specified in
+     * the configuration file.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
      *
-     * @return HasOne
+     * @return mixed
      */
-    public function update_context()
+    public function __call($method, $parameters)
     {
-        return $this->hasOne('Corb\Logging\Models\LogContexts\LogContextUpdate');
+        $contexts_arr = config('logging.contexts');
+
+        // If the method being called is a context key, define a relationship
+        // with the context model. If it's not, use default Eloquent implementation.
+        if (array_key_exists($method, $contexts_arr)) {
+            return $this->hasOne($contexts_arr[$method]);
+        } else {
+            return parent::__call($method, $parameters);
+        }
+    }
+
+    /**
+     * Get a relationship. Overrides the default Illuminate\Database\Eloquent\Model
+     * method to allow getting the relationship even if the method doesn't exist
+     * in the model but it's defined as a context in the configuration file.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getRelationValue($key)
+    {
+        if ($this->relationLoaded($key)) {
+            return $this->relations[$key];
+        }
+
+        if (method_exists($this, $key) || $this->contextIsDefined($key)) {
+            return $this->getRelationshipFromMethod($key);
+        }
+    }
+
+    /**
+     * Determines if the given context is defined in the configuration file.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     *
+     * @param  string  $context
+     * @return boolean
+     */
+    protected function contextIsDefined($context)
+    {
+        return array_key_exists($context, config('logging.contexts'));
     }
 }

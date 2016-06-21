@@ -2,64 +2,69 @@
 
 namespace Corb\Logging;
 
-use Auth;
 use Corb\Logging\Models\ActivityLog;
 
 class Logger
 {
     /**
-     * Defined actions
-     */
-    const UPDATE = 'update';
-    const CREATE = 'create';
-    const DELETE = 'delete';
-
-    /**
      * Creates a new log entry.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
-     * @since 0.1.0
-     * @version 0.1.0
      *
-     * @param  string $action           Indicates the action being logged
-     * @param  object $context          Represents the contextual data of the log
-     * @param  number $responsible_id   Id of the user responsible for the action
-     * @param  object $loggeable        The model being logged
+     * @param  string $action          Indicates the action being logged
+     * @param  object $context         Represents the contextual data of the log
+     * @param  number $responsible_id  Id of the user responsible for the action
+     * @param  object $loggeable       The model being logged
      *
-     * @return App\Models\ActivityLog   The created log
+     * @return Corb\Logging\Models\ActivityLog   The created log
      */
     public static function create($action, $context = NULL, $responsible_id = NULL, $loggeable = NULL)
     {
-        $auth_method = config('logging.auth_method');
 
-        // get responsible user
-        if (is_null($responsible_id) && $auth_method) {
-            $user = $auth_method();
-
-            if (isset($user)) {
-                $responsible_id = $user->id;
-            }
+        if (is_null($responsible_id)) {
+            $responsible_id = static::getResponsibleId();
         }
 
-        // create log instance
         $log = new ActivityLog([
             'responsible_id' => $responsible_id,
             'action'         => $action
         ]);
 
+        // Save log in loggeable model
         if (isset($loggeable)) {
-            // save log in the loggeable model
             $loggeable->activityLogs()->save($log);
         } else {
             $log->save();
         }
 
+        // Associate log with the context
         if (isset($context)) {
-            // associate and save log context
             $context->activityLog()->associate($log);
             $context->save();
         }
 
         return $log;
+    }
+
+    /**
+     * Obtains responsible user id from current authenticated user.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     *
+     * @return mixed number|null
+     */
+    protected static function getResponsibleId()
+    {
+        $auth_method = config('logging.auth_method');
+
+        if ($auth_method) {
+            $user = $auth_method();
+
+            if (isset($user)) {
+                return $user->id;
+            }
+        }
+
+        return NULL;
     }
 }
