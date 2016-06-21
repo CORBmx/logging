@@ -63,7 +63,7 @@ trait LoggeableTrait
      */
     public function createLog($action, $context = NULL, $responsible_id = NULL)
     {
-        return Log::create($action, $context, $responsible_id, $this);
+        return Logger::create($action, $context, $responsible_id, $this);
     }
 
     /**
@@ -77,6 +77,6 @@ trait LoggeableTrait
      */
     public function activityLogs()
     {
-        return $this->morphMany('App\Models\ActivityLog', 'loggeable');
+        return $this->morphMany('Corb\Logging\Models\ActivityLog', 'loggeable');
     }
 }

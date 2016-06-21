@@ -11,7 +11,7 @@
     "keywords": ["activity", "logger", "logging", "logs", "actions"],
     "autoload": {
         "psr-4": {
-            "Corb\\ActivityLogger\\": "src/"
+            "Corb\\Logging\\": "src/"
         }
     }
 }

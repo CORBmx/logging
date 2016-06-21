@@ -30,9 +30,11 @@ class Logger
      */
     public static function create($action, $context = NULL, $responsible_id = NULL, $loggeable = NULL)
     {
+        $auth_method = config('logging.auth_method');
+
         // get responsible user
-        if (!isset($responsible_id)) {
-            $user = Auth::User();
+        if (is_null($responsible_id) && $auth_method) {
+            $user = $auth_method();
 
             if (isset($user)) {
                 $responsible_id = $user->id;

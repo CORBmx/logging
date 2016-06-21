@@ -47,7 +47,7 @@ class ActivityLog extends Model
      */
     public function responsible()
     {
-        return $this->belongsTo('App\Models\Core\User', 'responsible_id');
+        return $this->belongsTo(config('logging.user_model'), 'responsible_id');
     }
 
     /**
@@ -61,6 +61,6 @@ class ActivityLog extends Model
      */
     public function update_context()
     {
-        return $this->hasOne('App\Models\LogContexts\LogContextUpdate');
+        return $this->hasOne('Corb\Logging\Models\LogContexts\LogContextUpdate');
     }
 }

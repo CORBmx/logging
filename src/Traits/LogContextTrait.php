@@ -23,6 +23,6 @@ trait LogContextTrait {
      */
     public function activityLog()
     {
-        return $this->belongsTo('App\Models\ActivityLog');
+        return $this->belongsTo('Corb\Logging\Models\ActivityLog');
     }
 }
