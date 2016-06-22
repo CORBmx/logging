@@ -25,8 +25,6 @@ class ActivityLog extends Model
     /**
      * Get the loggeable model.
      *
-     * @author Jesús Barrera <jesus.barrera@corb.mx>
-     *
      * @return MorphTo
      */
     public function loggeable()
@@ -36,8 +34,6 @@ class ActivityLog extends Model
 
     /**
      * Get the responsible user of this log.
-     *
-     * @author Jesús Barrera <jesus.barrera@corb.mx>
      *
      * @return BelongsTo
      */
@@ -49,8 +45,6 @@ class ActivityLog extends Model
     /**
      * Dinamically defines a relationship with a context model if specified in
      * the configuration file.
-     *
-     * @author Jesús Barrera <jesus.barrera@corb.mx>
      *
      * @return mixed
      */
@@ -72,8 +66,6 @@ class ActivityLog extends Model
      * method to allow getting the relationship even if the method doesn't exist
      * in the model but it's defined as a context in the configuration file.
      *
-     * @author Jesús Barrera <jesus.barrera@corb.mx>
-     *
      * @param  string  $key
      * @return mixed
      */
@@ -90,8 +82,6 @@ class ActivityLog extends Model
 
     /**
      * Determines if the given context is defined in the configuration file.
-     *
-     * @author Jesús Barrera <jesus.barrera@corb.mx>
      *
      * @param  string  $context
      * @return boolean

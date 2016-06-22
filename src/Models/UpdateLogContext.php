@@ -3,7 +3,7 @@
 namespace Corb\Logging\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Corb\Logging\Traits\LogContextTrait;
+use Corb\Logging\Traits\LogContext;
 
 /**
  * The LogContextUpdate model abstracts the log_context_updates table, which stores
@@ -11,11 +11,11 @@ use Corb\Logging\Traits\LogContextTrait;
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
  */
-class LogContextUpdate extends Model
+class UpdateLogContext extends Model
 {
-    use LogContextTrait;
+    use LogContext;
 
-    protected $table = 'log_context_updates';
+    protected $table = 'update_log_contexts';
 
     protected $fillable = [
         'before',

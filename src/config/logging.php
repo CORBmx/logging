@@ -53,6 +53,6 @@ return [
     |
     */
     'contexts' => [
-        'update_context' => 'Corb\Logging\Models\LogContextUpdate'
+        'update_context' => 'Corb\Logging\Models\UpdateLogContext'
     ]
 ];

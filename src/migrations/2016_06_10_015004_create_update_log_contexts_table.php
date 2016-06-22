@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogContextUpdatesTable extends Migration
+class CreateUpdateLogContextsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateLogContextUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('log_context_updates', function (Blueprint $table) {
+        Schema::create('update_log_contexts', function (Blueprint $table) {
             $table->increments('id');
             $table->text('before');
             $table->text('after');
@@ -30,6 +30,6 @@ class CreateLogContextUpdatesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('log_context_updates');
+        Schema::drop('update_log_contexts');
     }
 }

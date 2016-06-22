@@ -2,7 +2,7 @@
 
 namespace Corb\Logging\Traits;
 
-trait UserActivityTrait
+trait UserActivity
 {
     /**
      * Get the logs that this user is responsible of.
