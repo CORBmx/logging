@@ -11,11 +11,19 @@ use Corb\Logging\Actions;
  * log table.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
+ * @version 1.0.0
+ * @since 1.0.0
  */
 trait Loggeable
 {
     /**
      * Registers listeners for the created, updated and deleted events.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
+     * @return void
      */
     public static function bootLoggeable()
     {
@@ -39,8 +47,7 @@ trait Loggeable
         }
 
         if (in_array('updated', $events)) {
-            static::updating(function ($model)
-            {
+            static::updating(function ($model) {
                 $model->beforeUpdate();
             });
         }
@@ -54,6 +61,12 @@ trait Loggeable
 
     /**
      * Called after a the model creation. Creates a new log for this action.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
+     * @return void
      */
     protected function afterCreate()
     {
@@ -62,6 +75,12 @@ trait Loggeable
 
     /**
      * Called after the model is deleted. Creates a new log for this action.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
+     * @return void
      */
     protected function afterDelete()
     {
@@ -70,6 +89,12 @@ trait Loggeable
 
     /**
      * Called after the model is updated. Creates a new log for this action.
+     *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
+     * @return void
      */
     protected function beforeUpdate()
     {
@@ -91,6 +116,10 @@ trait Loggeable
     /**
      * Creates a new log entry for this model.
      *
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
      * @param  string $action           Indicates the action being logged
      * @param  object $context          Represents the contextual data of the log
      * @param  number $responsible_id   Id of the user responsible for the action
@@ -105,7 +134,11 @@ trait Loggeable
     /**
      * Returns the activity logs for this model.
      *
-     * @return MorphMany
+     * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function activityLogs()
     {

@@ -8,6 +8,8 @@ namespace Corb\Logging\Traits;
  * before and after state of the updated instance, so a LogContext is required.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
+ * @version 1.0.0
+ * @since 1.0.0
  */
 trait LogContext
 {
@@ -15,8 +17,10 @@ trait LogContext
      * Get the ActivityLog this context belongs to.
      *
      * @author Jesús Barrera <jesus.barrera@corb.mx>
+     * @version 1.0.0
+     * @since 1.0.0
      *
-     * @return BelongsTo Relation with the ActivityLog model
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function activityLog()
     {

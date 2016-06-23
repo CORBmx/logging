@@ -4,6 +4,13 @@ namespace Corb\Logging;
 
 use Corb\Logging\Models\ActivityLog;
 
+/**
+ * The Logger class provides a simple interface for logging.
+ *
+ * @author Jesús Barrera <jesus.barrera@corb.mx>
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 class Logger
 {
     /**

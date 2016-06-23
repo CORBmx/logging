@@ -10,6 +10,8 @@ use Corb\Logging\Traits\LogContext;
  * contextual data for the update action logs.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
+ * @version 1.0.0
+ * @since 1.0.0
  */
 class UpdateLogContext extends Model
 {
