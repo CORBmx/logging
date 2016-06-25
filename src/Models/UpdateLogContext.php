@@ -3,21 +3,21 @@
 namespace Corb\Logging\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Corb\Logging\Traits\LogContextTrait;
+use Corb\Logging\Traits\LogContext;
 
 /**
  * The LogContextUpdate model abstracts the log_context_updates table, which stores
- * contextual data for the update event logs.
+ * contextual data for the update action logs.
  *
  * @author Jesús Barrera <jesus.barrera@corb.mx>
- * @since 0.1.0
- * @version 0.1.0
+ * @version 1.0.0
+ * @since 1.0.0
  */
-class LogContextUpdate extends Model
+class UpdateLogContext extends Model
 {
-    use LogContextTrait;
+    use LogContext;
 
-    protected $table = 'log_context_updates';
+    protected $table = 'update_log_contexts';
 
     protected $fillable = [
         'before',

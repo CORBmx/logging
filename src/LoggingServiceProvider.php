@@ -13,7 +13,21 @@ class LoggingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Publish configuration file
+        $this->publishes(
+            [
+                __DIR__ . '/config' => config_path()
+            ],
+            'config'
+        );
+
+        // Publish migrations
+        $this->publishes(
+            [
+                __DIR__ . '/migrations' => database_path('migrations/')
+            ],
+            'migrations'
+        );
     }
 
     /**
