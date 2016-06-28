@@ -42,11 +42,11 @@ information mentioned above, that we may want to store. The [*updated event*](#u
 for example, registers the *before* and *after* states of the updated model instance.
 As this contextual data is required only for that specific action, it's not stored
 in the *activity_logs* table but in its own table. A table must be created for
-each action we have contextual data for. In the case of the UPDATE action, this
+each action we have contextual data for. In the case of the *updated* event, this
 data is stored in the *update_log_contexts* table. This way, if you want to store
 extra data for a custom action of your own, it's necessary that you create its own
 **context table**. There are some utilities that facilitates the inclusion of custom
-actions, see the [Logging custom actions](#logging-custom-actions) on how to do this.
+actions, see [Logging custom actions](#logging-custom-actions) on how to do this.
 
 # Configuration
 
@@ -76,7 +76,7 @@ to which the relationship points to. This way, you can access the context in eac
 of your logs using this property and also eager loading your contexts when querying
 multiple logs.
 
-```
+```php
 'contexts' => [
     'update_context' => 'Corb\Logging\Models\UpdateLogContext'
 ]
@@ -88,7 +88,7 @@ In the top of your config file, there's an abstract class `Actions` where all lo
 actions are defined as const members. Here you can add your own actions or change
 the predefined actions keys.
 
-```
+```php
 abstract class Actions
 {
     const CREATE = 'create';
@@ -117,7 +117,7 @@ You can log actions over your model using the `createLog` method:
 
 ## createLog
 
-```
+```php
 public function createLog($action, $context = NULL, $responsible_id = NULL)
 ```
 
@@ -145,7 +145,7 @@ user will be assumed as responsible.
 
 You can simply log an action over your model as follows:
 
-```
+```php
 // Within your loggeable model
 $this->createLog('my_action');
 
@@ -165,7 +165,7 @@ which of these events must be logged.
 For example, if you want the *created* and *updated* events to be logged, but not
 the *deleted* event, you can use:
 
-```
+```php
 use Illuminate\Database\Eloquent\Model;
 use Corb\Logging\Traits\Loggeable;
 
@@ -203,7 +203,7 @@ defines a *one to many* relationship between the loggeable model and the
 
 You can retrieve all the *updated* event logs for a model as follows:
 
-```
+```php
 use Corb\Logging\Actions;
 ...
 $loggeable = MyLoggeableModel::first();
@@ -232,21 +232,21 @@ your logs context.
 #### Eager loading log context
 You should use the `with` method to load all your logs context in a single query:
 
-```
+```php
 $loggeable->activityLogs()->with('update_context')->where('action', Actions::UPDATE);
 ```
 
 Now you can access the `update_context` property without executing extra queries.
 
-# Loggger
-The `Corb\Logging\Loggger` class defines a simple method `create` to record new
+# Logger
+The `Corb\Logging\Logger` class defines a simple method `create` to record new
 logs. It's prefered to use this method  alongside  the `createLog` method in the
 [Loggeable](#loggeable) trait, instead of directly create logs using the `ActivityLog`
 model, as these methods resolve the relationships between the log, the context log and
 the loggeable instance.
 
 ## create
-```
+```php
 public static function create($action, $context = NULL, $responsible_id = NULL, $loggeable = NULL)
 ```
 #### $action, $context, $responsible_id
@@ -263,7 +263,7 @@ attached to it or not, although this is not recommended.
 
 #### Examples
 
-```
+```php
 use Corb\Logging\Logger;
 ...
 Logger::create('my_action');
@@ -274,7 +274,7 @@ The `App\Models\ActivityLog` model abstracts the *activity_logs* table. The resu
 returned by the `activityLogs` property in the `Loggeable` trait are instances of
 this model. These intances contain the general information of each log.
 
-```
+```php
 $log = $loggeable->activityLogs()->first()
 
 $log->action      // the logged action
@@ -289,7 +289,7 @@ You can access your user activity history, this is, all the logs where the user
 appears as responsible. For this, add the `Corb\Logging\Traits\UserActivity` trait
 in your user model.
 
-```
+```php
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Corb\Logging\Traits\UserActivity;
 
@@ -304,7 +304,7 @@ class User extends Authenticatable
 This will add a method `activity` in your model, which defines a *HasMany* relationship
 with the `ActivityLog` model, so you can query the user activity.
 
-```
+```php
 $user = User::first();
 
 $activity = $user->activity()->orderBy('created_at', 'desc')->get();
@@ -325,7 +325,7 @@ define a new action to log.
 First of all, we need to register the new action. Go to the *app\logging.php* file
 and add your action as a *const* member in the `Actions` abstract class:
 
-```
+```php
 ...
 abstract class Actions
 {
@@ -343,7 +343,7 @@ for your context table. The only required column for a context table it's a fore
 key `activity_log_id` that will reference the log it belongs to on the *activity_logs*
 table:
 
-```
+```php
     Schema::create('my_action_log_contexts', function (Blueprint $table) {
         $table->increments('id');
 
@@ -364,7 +364,7 @@ table:
 Next, create a model for you *context table*. Make sure you add the `Corb\Logging\Traits\LogContext`
 trait to your model.
 
-```
+```php
 namespace MyApp\Models\MyActionLogContext;
 
 use Illuminate\Database\Eloquent\Model;
@@ -382,7 +382,7 @@ class MyActionLogContext extends Model
 In order to allow [eager loading](#eager-loading-context) your log context, you
 must add it to the `context` array in the *app/logging.php* configuration file.
 
-```
+```php
     ...
 
     'contexts' => [
@@ -394,7 +394,7 @@ must add it to the `context` array in the *app/logging.php* configuration file.
 ## Use it
 Now you can create logs for your action and query them:
 
-```
+```php
 // Create a context instance
 $context = new MyActionLogContext();
 
@@ -408,6 +408,6 @@ $loggeable->createLog(Actions::MY_ACTION, $context);
 $log = $loggeable->activityLogs()->with('my_action_context')->where('action', Actions::MY_ACTION')->first();
 
 $log->my_action_context->data;
-$log->responsible
+$log->responsible;
 ...
 ```
