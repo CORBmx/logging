@@ -1,14 +1,18 @@
 {
     "name": "corb/activity-logger",
     "description": "Activity logger for your application",
+    "homepage": "https://github.com/CORBmx/logging/"
     "authors": [
         {
             "name": "Jesus Barrera",
             "email": "jesus.barrera@corb.mx"
         }
     ],
+    "require": {
+        "php": ">=5.5.9"
+    },
     "type": "library",
-    "keywords": ["activity", "logger", "logging", "logs", "actions"],
+    "keywords": ["activity", "logger", "logging", "logs", "actions", "events"],
     "autoload": {
         "psr-4": {
             "Corb\\Logging\\": "src/"
